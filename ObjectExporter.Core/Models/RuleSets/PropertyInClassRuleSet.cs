@@ -19,6 +19,11 @@ namespace ObjectExporter.Core.Models.RuleSets
 
         public bool IsValid(string expressionType, string dataMemberPropertyName)
         {
+            // Array hack
+            if (expressionType.EndsWith("[]") && dataMemberPropertyName.StartsWith("[") && dataMemberPropertyName.EndsWith("]"))
+            {
+                return true;
+            }
             Type type = _retriever.GetTypeFromString(expressionType);
             List<string> properties = type.GetAllPropertyNames();
 

@@ -13,7 +13,7 @@
     }
     else
     {
-        #>var <#= GeneratorHelper.ResolveReservedNames(objectExpression.Name) #> = <#
+        #>var <#
         ExportMembers(objectExpression, 0, true);
     }
 #>;
@@ -85,8 +85,16 @@
             }
             else
             {
-                #>new <#= expressionType #><#+
-                WriteLine(""); #>{<#+
+				if(!GeneratorHelper.IsCollectionMember(expressionName))
+				{
+					#><#= expressionName #> = new <#= expressionType #><#+ 
+					WriteLine(""); #>{<#+
+				}
+				else
+				{
+					#>new <#= expressionType #><#+
+					WriteLine(""); #>{<#+
+				}
             }
 
             List<Expression> cleanedExpressionMembers = GeneratorHelper.SanitizeExpressions(expression, _ruleSetValidator, expressionType);
